@@ -1,0 +1,17 @@
+We import the necessary libraries, namely RPi.GPIO for GPIO control and time for timing functions.
+GPIO pin numbering mode is set to GPIO.BOARD.
+We define the pin connected to the servo motor (servo_pin).
+The PWM pin is set as an output.
+A PWM instance is created with a frequency of 50 Hz.
+The set_angle() function takes an angle and moves the servo accordingly. The angle is converted to the duty cycle required for the PWM signal.
+Inside the while loop, the servo is moved to 0, 90, and 180 degrees sequentially with a one-second pause in between each movement.
+The try...except block ensures that the GPIO and PWM resources are properly cleaned up when the program is terminated by a keyboard interrupt (Ctrl+C).
+
+
+Remember to connect the signal wire of the servo motor to the designated GPIO pin (servo_pin),
+and adjust the GPIO pin number according to your setup if necessary. 
+Also, make sure you have the RPi.GPIO library installed (pip install RPi.GPIO).
+
+
+
+
