@@ -11,10 +11,10 @@ ESC_PIN = 11
 PWM_FREQ = 50  # Hz
 
 # Set maximum and minimum throttle values
-MAX_THROTTLE = 100
+MAX_THROTTLE = 5000
 MIN_THROTTLE = 0
 
-# Set initial throttle value
+# Initialize throttle value
 throttle = 0
 
 # Initialize GPIO pin for ESC
@@ -28,19 +28,19 @@ pwm.start(0)
 
 # Function to set throttle
 def set_throttle(val):
-    # Declare the function set_throttle which takes a single argument val
     global throttle
-    # Declare throttle as a global variable so it can be accessed and modified within this function
 
-    # Check if the provided throttle value is less than the minimum throttle value
-    if val < MIN_THROTTLE:
-        val = MIN_THROTTLE  # If it is, set val to the minimum throttle value
-    # Check if the provided throttle value is greater than the maximum throttle value
-    elif val > MAX_THROTTLE:
-        val = MAX_THROTTLE  # If it is, set val to the maximum throttle value
+    # Scale the throttle input from (0-100) to (MIN_THROTTLE-MAX_THROTTLE)
+    throttle = MIN_THROTTLE + (val / 100.0) * (MAX_THROTTLE - MIN_THROTTLE)
 
-    throttle = val  # Set the global variable throttle to the adjusted throttle value
-    pwm.ChangeDutyCycle(throttle)  # Change the duty cycle of the PWM signal to control the motor speed
+    # Ensure throttle is within bounds
+    if throttle < MIN_THROTTLE:
+        throttle = MIN_THROTTLE
+    elif throttle > MAX_THROTTLE:
+        throttle = MAX_THROTTLE
+
+    # Change the duty cycle of the PWM signal to control the motor speed
+    pwm.ChangeDutyCycle(throttle / 100.0)
 
 try:
     while True:
